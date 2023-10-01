@@ -140,7 +140,7 @@ export default function Page() {
 
   return (
     <Flex flexDirection="column">
-      <VStack spacing="2em">
+      <VStack spacing="2rem">
         <Heading as="h1" size="xl">
           Create keycap listing
         </Heading>
@@ -154,7 +154,7 @@ export default function Page() {
         >
           {(props) => (
             <Form>
-              <VStack spacing="4em">
+              <VStack spacing="4rem">
                 <Field name="keycap" validate={validateKeycap}>
                   {({ field, form }: FieldProps) => (
                     <FormControl
@@ -182,7 +182,7 @@ export default function Page() {
                       </Select>
                       {selectedKeycap?.image && (
                         <Image
-                          paddingTop="1em"
+                          paddingTop="1rem"
                           src={selectedKeycap.image}
                           alt={selectedKeycap.name}
                         />

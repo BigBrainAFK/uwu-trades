@@ -4,7 +4,7 @@ import { VStack, Text, Link } from "@chakra-ui/react";
 
 export default function Page() {
   return (
-    <VStack>
+    <VStack fontSize="xl" fontWeight="bold" spacing="2rem">
       <Text>
         All trades or arrangements made between individuals are the sole
         responsibility of the parties involved.

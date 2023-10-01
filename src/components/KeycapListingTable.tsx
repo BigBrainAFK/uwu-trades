@@ -259,7 +259,7 @@ export function KeyCapListingTable({ data }: DataTableProps) {
           ))}
         </Tbody>
       </Table>
-      <Flex alignSelf="center" justifyItems="center" gap="2em">
+      <Flex alignSelf="center" justifyItems="center" gap="2rem">
         <HStack>
           <Button
             onClick={() => table.setPageIndex(0)}
