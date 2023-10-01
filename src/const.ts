@@ -1,5 +1,5 @@
 import { AuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import DiscordProvider from "./context/DiscordProvider";
 import { PrismaClient } from "@prisma/client";
 
 export const __dev__ = process.env.NODE_ENV === "development";
