@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Listing {
+  id             Int             @id @default(autoincrement())
+  userId         String
+  exchange       ExchangeType
+  country        String
+  nearestCity    String
+  keycap         Keycap          @relation(fields: [keycapId], references: [id])
+  keycapId       Int
+  type           ListingType
+
+  @@map("listing")
+}
+
+model Keycap {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  image          String
+  listings       Listing[]
+
+  @@map("keycap")
+}
+
+enum ListingType {
+  WANT @map("want")
+  HAS @map("has")
+
+  @@map("listing_type")
+}
+
+enum ExchangeType {
+  IRL @map("irl")
+  MAIL @map("mail")
+
+  @@map("exchange_type")
+}
