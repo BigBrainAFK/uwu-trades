@@ -26,6 +26,7 @@ interface Props {
 const NavEntries = [
   { name: "Home", href: "/" },
   { name: "Add listing", href: "/listing/create" },
+  { name: "About", href: "/about" },
 ];
 
 function NavLink(props: Props) {
