@@ -1,6 +1,8 @@
+"use client";
+
 import { VStack, Text, Link } from "@chakra-ui/react";
 
-export function Page() {
+export default function Page() {
   return (
     <VStack>
       <Text>
