@@ -7,7 +7,8 @@ export default function Page() {
     <Image
       src="/static/images/Keycap_Overview.png"
       alt="Keycap overview"
-      height="100%"
+      maxHeight="100%"
+      maxWidth="100%"
     />
   );
 }
