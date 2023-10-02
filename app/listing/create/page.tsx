@@ -202,13 +202,13 @@ export default function Page() {
                           </VStack>
                         )}
                       />
-                      {selectedKeycap?.image && (
+                      {/* {selectedKeycap?.image && (
                         <Image
                           paddingTop="1rem"
                           src={selectedKeycap.image}
                           alt={selectedKeycap.name}
                         />
-                      )}
+                      )} */}
                       <FormErrorMessage>
                         {form.errors.keycap?.toString()}
                       </FormErrorMessage>

@@ -263,25 +263,25 @@ export function KeyCapListingTable({ data }: DataTableProps) {
         <HStack>
           <Button
             onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
+            isDisabled={!table.getCanPreviousPage()}
           >
             {"<<"}
           </Button>
           <Button
             onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            isDisabled={!table.getCanPreviousPage()}
           >
             {"<"}
           </Button>
           <Button
             onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            isDisabled={!table.getCanNextPage()}
           >
             {">"}
           </Button>
           <Button
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
+            isDisabled={!table.getCanNextPage()}
           >
             {">>"}
           </Button>
