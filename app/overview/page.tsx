@@ -6,12 +6,6 @@ import useSWR from "swr";
 import { Keycap } from "@prisma/client";
 import { LoadingError } from "../../src/components/LoadingError";
 import { Loading } from "../../src/components/Loading";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "UwU Keycap Trades - Overview",
-  description: "All Wooting UwU keycaps that exist",
-};
 
 export default function Page() {
   const { data: keycaps, error: keycapsError } = useSWR<Keycap[], Error>(

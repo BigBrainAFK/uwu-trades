@@ -22,12 +22,6 @@ import useSWR from "swr";
 import { LoadingError } from "../../../src/components/LoadingError";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "UwU Keycap Trades - Add listing",
-  description: "Create a trade listing for a Wooting UwU keycap",
-};
 
 interface FormData {
   keycap: { label: string; value: string; image: string } | undefined;
