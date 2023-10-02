@@ -16,7 +16,7 @@ export default function Page() {
       <Text>All trading is done at the individual's own risk: be careful!</Text>
       <Text>
         The Website is provided as is and all source code can be found at{" "}
-        <Link href="https://github.com/BigBrainAFK/uwu-trades"></Link>
+        <Link href="https://github.com/BigBrainAFK/uwu-trades">GitHub</Link>
       </Text>
     </VStack>
   );
