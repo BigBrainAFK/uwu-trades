@@ -79,7 +79,7 @@ export async function getDiscordUser(id: string) {
     const formattedUser: DiscordInfo = {
       id: user.id,
       name: `${user.username}${
-        user.discriminator === "0" ? "" : user.discriminator
+        user.discriminator === "0" ? "" : `#${user.discriminator}`
       }`,
     };
 
