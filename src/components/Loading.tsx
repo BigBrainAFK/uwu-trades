@@ -1,3 +1,5 @@
+"use client";
+
 import { Heading, Spinner } from "@chakra-ui/react";
 
 export function Loading() {

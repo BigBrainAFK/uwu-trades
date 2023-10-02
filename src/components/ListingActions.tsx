@@ -4,8 +4,6 @@ import { HStack } from "@chakra-ui/react";
 import { RemoveButton } from "./RemoveButton";
 import { useSession } from "next-auth/react";
 import { isSessionValid } from "../util";
-import { KeyedMutator } from "swr";
-import { KeycapListing } from "../types";
 
 interface Props {
   id: number;

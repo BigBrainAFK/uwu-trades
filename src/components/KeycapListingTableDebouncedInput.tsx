@@ -1,3 +1,5 @@
+"use client";
+
 import { Input, InputProps } from "@chakra-ui/react";
 import * as _chakra_ui_system from "@chakra-ui/system";
 import { useState, useEffect } from "react";

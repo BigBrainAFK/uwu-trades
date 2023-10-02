@@ -6,7 +6,9 @@ export const __dev__ = process.env.NODE_ENV === "development";
 export const __prod__ = process.env.NODE_ENV === "production";
 export const __test__ = process.env.NODE_ENV === "test";
 
-export const API_BASE = __dev__ ? "http://localhost:4000" : "https://keycap.io";
+export const API_BASE = __dev__
+  ? "http://localhost:4000"
+  : "https://uwuting.com";
 
 export const authOptions: AuthOptions = {
   providers: [

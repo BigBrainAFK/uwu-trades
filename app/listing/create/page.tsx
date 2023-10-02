@@ -243,7 +243,7 @@ export default function Page() {
                           {value != "IRL"
                             ? `${value.charAt(0)}${value
                                 .slice(1)
-                                .toLocaleLowerCase()}`
+                                .toLowerCase()}`
                             : value}
                         </Radio>
                       ))}

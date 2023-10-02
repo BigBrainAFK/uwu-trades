@@ -1,3 +1,5 @@
+"use client";
+
 import type { Table, Column } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { KeycapListingTableDebouncedInput } from "./KeycapListingTableDebouncedInput";
