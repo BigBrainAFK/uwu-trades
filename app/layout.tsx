@@ -3,6 +3,12 @@ import AuthProvider from "../src/context/AuthProvider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../src/const";
 import Navbar from "../src/components/Navbar";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "UwU Keycap Trades",
+  description: "Small website for trading Wooting UwU keycaps",
+};
 
 export default async function RootLayout({
   children,

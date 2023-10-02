@@ -1,6 +1,12 @@
 "use client";
 
 import { VStack, Text, Link } from "@chakra-ui/react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "UwU Keycap Trades - About",
+  description: "Some information about the website",
+};
 
 export default function Page() {
   return (
