@@ -10,6 +10,7 @@ import {
   Heading,
   Flex,
   Radio,
+  Text,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { ExchangeType, Keycap, ListingType } from "@prisma/client";
@@ -23,7 +24,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface FormData {
-  keycap: string | undefined;
+  keycap: { label: string; value: string; image: string } | undefined;
   type: string | undefined;
   exchange: string | undefined;
   country?: { label: string; value: string };
@@ -59,6 +60,7 @@ export default function Page() {
   const keycapOptions = keycaps.map((keycap) => ({
     label: keycap.name,
     value: keycap.id,
+    image: keycap.image,
   }));
 
   const countriesOptions = countries.map((country) => ({
@@ -193,6 +195,12 @@ export default function Page() {
                           (keycap) => keycap.value == selectedKeycap?.id
                         )}
                         options={keycapOptions}
+                        formatOptionLabel={(keycap) => (
+                          <VStack spacing="4">
+                            <Text>{keycap.label}</Text>
+                            <Image src={keycap.image} alt={keycap.label} />
+                          </VStack>
+                        )}
                       />
                       {selectedKeycap?.image && (
                         <Image
