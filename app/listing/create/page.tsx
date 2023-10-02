@@ -5,13 +5,13 @@ import {
   FormLabel,
   FormErrorMessage,
   Button,
-  Select,
   Image,
   VStack,
   Heading,
   Flex,
   Radio,
 } from "@chakra-ui/react";
+import { Select } from "chakra-react-select";
 import { ExchangeType, Keycap, ListingType } from "@prisma/client";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import { Loading } from "../../../src/components/Loading";
@@ -26,13 +26,16 @@ interface FormData {
   keycap: string | undefined;
   type: string | undefined;
   exchange: string | undefined;
-  country?: string;
-  city?: string;
+  country?: { label: string; value: string };
+  city?: { label: string; value: string };
 }
 
 export default function Page() {
   const [selectedKeycap, setSelectedKeycap] = useState<Keycap>();
-  const [selectedCountry, setSelectedCountry] = useState<string>();
+  const [selectedCountry, setSelectedCountry] = useState<{
+    label: string;
+    value: string;
+  }>();
   const router = useRouter();
 
   const { data: keycaps, error: keycapsError } = useSWR<Keycap[], Error>(
@@ -44,8 +47,8 @@ export default function Page() {
     swrFetcher
   );
   const { data: cities, mutate } = useSWR<string[], Error>(
-    selectedCountry != undefined && selectedCountry != ""
-      ? `/api/country/${selectedCountry}`
+    selectedCountry != undefined && selectedCountry.value != ""
+      ? `/api/country/${selectedCountry.value}`
       : null,
     swrFetcher
   );
@@ -53,13 +56,28 @@ export default function Page() {
   if (keycapsError || countriesError) return <LoadingError />;
   if (keycaps == undefined || countries == undefined) return <Loading />;
 
+  const keycapOptions = keycaps.map((keycap) => ({
+    label: keycap.name,
+    value: keycap.id,
+  }));
+
+  const countriesOptions = countries.map((country) => ({
+    label: country,
+    value: country,
+  }));
+
+  const citiesOptions = cities?.map((city) => ({
+    label: city,
+    value: city,
+  }));
+
   function validateKeycap(value: any) {
     let error;
     if (!value) {
       error = "Please select a keycap";
       setSelectedKeycap(undefined);
     } else {
-      const keycap = keycaps?.find((keycap) => keycap.id == value);
+      const keycap = keycaps?.find((keycap) => keycap.id == value.value);
 
       if (keycap == undefined) {
         error = "Please select a valid keycap";
@@ -88,7 +106,7 @@ export default function Page() {
 
   function validateCountry(value: any) {
     let error;
-    if (value && !countries?.includes(value)) {
+    if (value && !countries?.includes(value.value)) {
       error = "Please select a valid country for the listing";
       setSelectedCountry(undefined);
     } else {
@@ -100,7 +118,7 @@ export default function Page() {
   function validateCity(value: any) {
     let error;
     mutate();
-    if (value && !cities?.includes(value)) {
+    if (value && !cities?.includes(value.value)) {
       error = "Please select a valid city for the listing";
     }
     return error;
@@ -114,16 +132,14 @@ export default function Page() {
 
     console.log(data);
 
-    if (!("country" in data) || data.country == undefined) {
-      data.country = "Unspecified";
-    }
-    if (!("city" in data) || data.city == undefined) {
-      data.city = "Unspecified";
-    }
-
     fetch(`${API_BASE}/api/listing`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        ...data,
+        keycap: selectedKeycap?.id?.toString(),
+        country: selectedCountry?.value ?? "Unspecified",
+        city: data.city?.value ?? "Unspecified",
+      }),
       credentials: "include",
     }).then((response) => {
       actions.setSubmitting(false);
@@ -170,16 +186,14 @@ export default function Page() {
                       <Select
                         {...field}
                         placeholder="Select keycap"
-                        defaultValue={selectedKeycap?.id}
-                      >
-                        {keycaps.map((keycap) => {
-                          return (
-                            <option key={keycap.id} value={keycap.id}>
-                              {keycap.name}
-                            </option>
-                          );
-                        })}
-                      </Select>
+                        onChange={(value) =>
+                          props.setFieldValue("keycap", value)
+                        }
+                        defaultValue={keycapOptions.find(
+                          (keycap) => keycap.value == selectedKeycap?.id
+                        )}
+                        options={keycapOptions}
+                      />
                       {selectedKeycap?.image && (
                         <Image
                           paddingTop="1rem"
@@ -248,7 +262,7 @@ export default function Page() {
                         </Radio>
                       ))}
                       <FormErrorMessage>
-                        {form.errors.type?.toString()}
+                        {form.errors.exchange?.toString()}
                       </FormErrorMessage>
                     </FormControl>
                   )}
@@ -266,20 +280,18 @@ export default function Page() {
                         {...field}
                         placeholder="Select country"
                         defaultValue={selectedCountry}
-                      >
-                        {countries.map((name) => (
-                          <option key={name} value={name}>
-                            {name}
-                          </option>
-                        ))}
-                      </Select>
+                        onChange={(value) =>
+                          props.setFieldValue("country", value)
+                        }
+                        options={countriesOptions}
+                      />
                       <FormErrorMessage>
-                        {form.errors.type?.toString()}
+                        {form.errors.country?.toString()}
                       </FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
-                {cities && (
+                {cities && citiesOptions && (
                   <Field name="city" validate={validateCity}>
                     {({ field, form }: FieldProps) => (
                       <FormControl
@@ -289,15 +301,17 @@ export default function Page() {
                         flexDirection="column"
                       >
                         <FormLabel fontSize="2xl">Nearest city</FormLabel>
-                        <Select {...field} placeholder="Select nearest city">
-                          {cities.map((name) => (
-                            <option key={name} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Select
+                          {...field}
+                          placeholder="Select nearest city"
+                          defaultValue={form.values.city}
+                          onChange={(value) =>
+                            props.setFieldValue("city", value)
+                          }
+                          options={citiesOptions}
+                        />
                         <FormErrorMessage>
-                          {form.errors.type?.toString()}
+                          {form.errors.city?.toString()}
                         </FormErrorMessage>
                       </FormControl>
                     )}
