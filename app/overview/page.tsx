@@ -18,6 +18,7 @@ export default function Page() {
       keycaps.sort((a, b) => sortOrder === 'asc'
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name));
+
     }
   }, [keycaps, sortOrder]);
 
