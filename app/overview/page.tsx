@@ -17,7 +17,7 @@ export default function Page() {
   if (keycaps === undefined) return <Loading />;
 
   return (
-    <Wrap spacing="4">
+    <Wrap spacing="4" justify="center" paddingTop="1%">
       {keycaps.map((keycap) => (
         <WrapItem key={keycap.id}>
           <VStack>

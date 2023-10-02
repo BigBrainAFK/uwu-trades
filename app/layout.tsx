@@ -16,14 +16,13 @@ export default async function RootLayout({
       <body>
         <AuthProvider session={session}>
           <ChakraProvider>
-            <Flex height="100%" width="100%" direction="column">
+            <Flex direction="column" height="100vh">
               <Navbar />
               <Flex
-                height="100%"
-                width="100%"
                 direction="column"
-                justify="center"
-                align="center"
+                justifyContent="center"
+                alignItems="center"
+                flexGrow="1"
               >
                 {children}
               </Flex>

@@ -56,12 +56,12 @@ export default function Navbar() {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px="4">
+        <Flex h="16" alignItems="center" justifyContent="spacing-between">
           <IconButton
-            size={"md"}
+            size="md"
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={"Open Menu"}
+            aria-label="Open Menu"
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
           />
@@ -69,13 +69,9 @@ export default function Navbar() {
             marginLeft="auto"
             marginRight="auto"
             spacing={8}
-            alignItems={"center"}
+            alignItems="center"
           >
-            <HStack
-              as={"nav"}
-              spacing={4}
-              display={{ base: "none", md: "flex" }}
-            >
+            <HStack as="nav" spacing="4" display={{ base: "none", md: "flex" }}>
               {NavEntries.map((entry) => (
                 <NavLink key={entry.name} href={entry.href}>
                   {entry.name}
@@ -83,21 +79,21 @@ export default function Navbar() {
               ))}
             </HStack>
           </HStack>
-          <Flex alignItems={"center"}>
+          <Flex alignItems="center">
             {session && session.user ? (
               <Menu>
                 <MenuButton
                   as={Button}
-                  rounded={"full"}
-                  variant={"link"}
-                  cursor={"pointer"}
-                  minW={0}
+                  rounded="full"
+                  variant="link"
+                  cursor="pointer"
+                  minWidth="0"
                 >
-                  <Flex alignItems={"center"}>
+                  <Flex alignItems="center">
                     {session.user.name}
                     <Avatar
-                      size={"sm"}
-                      marginLeft={4}
+                      size="sm"
+                      marginLeft="4"
                       src={
                         session.user.image ??
                         "https://cdn.discordapp.com/embed/avatars/0.png"
@@ -118,8 +114,8 @@ export default function Navbar() {
         </Flex>
 
         {isOpen ? (
-          <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
+          <Box pb="4" display={{ md: "none" }}>
+            <Stack as="nav" spacing="4">
               {NavEntries.map((entry) => (
                 <NavLink key={entry.name} href={entry.href}>
                   {entry.name}
