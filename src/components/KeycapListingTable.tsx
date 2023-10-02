@@ -146,12 +146,10 @@ export type DataTableProps = {
 };
 
 export function KeyCapListingTable({ data }: DataTableProps) {
-  const rerender = useReducer(() => ({}), {})[1];
-  const [tableData, setTableData] = useState<KeycapListing[]>(data);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
-    data: tableData,
+    data,
     columns,
     filterFns: {
       fuzzy: fuzzyFilter,
@@ -160,6 +158,7 @@ export function KeyCapListingTable({ data }: DataTableProps) {
       columnFilters,
       sorting,
     },
+    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -205,8 +204,8 @@ export function KeyCapListingTable({ data }: DataTableProps) {
                 return (
                   <Th key={header.id} isNumeric={meta?.isNumeric}>
                     <VStack justify="center">
-                      <HStack>
-                        <Text onClick={header.column.getToggleSortingHandler()}>
+                      <HStack onClick={header.column.getToggleSortingHandler()}>
+                        <Text>
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
@@ -215,10 +214,11 @@ export function KeyCapListingTable({ data }: DataTableProps) {
 
                         {header.column.getIsSorted() ? (
                           <chakra.span pl="1">
-                            header.column.getIsSorted() === "desc" ? (
-                            <TriangleDownIcon aria-label="sorted descending" />
+                            {header.column.getIsSorted() === "desc" ? (
+                              <TriangleDownIcon aria-label="sorted descending" />
                             ) : (
-                            <TriangleUpIcon aria-label="sorted ascending" />)
+                              <TriangleUpIcon aria-label="sorted ascending" />
+                            )}
                           </chakra.span>
                         ) : (
                           <></>

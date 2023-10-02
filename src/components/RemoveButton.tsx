@@ -21,7 +21,9 @@ export function RemoveButton(props: Props) {
         fetch(`${API_BASE}/api/listing/${props.id}`, {
           method: "DELETE",
           credentials: "include",
-        }).then(() => mutate("/api/listing"))
+        }).then(() =>
+          mutate("/api/listing").then(() => console.log("Muatated"))
+        )
       }
     />
   );

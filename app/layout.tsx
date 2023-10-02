@@ -16,7 +16,7 @@ export default async function RootLayout({
       <body>
         <AuthProvider session={session}>
           <ChakraProvider>
-            <Flex height="100vh" width="100vw" direction="column">
+            <Flex height="100%" width="100%" direction="column">
               <Navbar />
               <Flex
                 height="100%"

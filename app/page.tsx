@@ -32,12 +32,7 @@ export default function Page() {
   }));
 
   return (
-    <Flex
-      height="100%"
-      width="100%"
-      alignItems="flex-start"
-      flexDirection="column"
-    >
+    <Flex alignItems="flex-start" flexDirection="column">
       <KeyCapListingTable data={formattedListings} />
     </Flex>
   );
