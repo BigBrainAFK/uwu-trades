@@ -65,8 +65,8 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 const columnHelper = createColumnHelper<KeycapListing>();
 
 const columns = [
-  columnHelper.accessor("user", {
-    cell: (data) => data.getValue().name,
+  columnHelper.accessor((row) => row.user.name, {
+    cell: (data) => data.getValue(),
     footer: (props) => props.column.id,
     header: "Discord Username",
   }),
