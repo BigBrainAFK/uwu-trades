@@ -37,11 +37,11 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import type { KeycapListing } from "../types";
+import type { KeycapListing } from "../../types";
 import { ExchangeType } from "@prisma/client";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import { KeycapListingTableFilter } from "./KeycapListingTableFilter";
-import { Keycap } from "./Keycap";
+import { Keycap } from "../Keycap";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -92,6 +92,7 @@ const columns = [
     header: "Image",
     enableColumnFilter: false,
     enableGlobalFilter: false,
+    enableSorting: false,
   }),
   columnHelper.accessor("exchange", {
     cell: (data) => {

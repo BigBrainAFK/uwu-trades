@@ -10,6 +10,13 @@ export const API_BASE = __dev__
   ? "http://localhost:4000"
   : "https://uwuting.com";
 
+export const NavEntries = [
+  { name: "Home", href: "/" },
+  { name: "Add listing", href: "/listing/create" },
+  { name: "Keycap Overview", href: "/overview" },
+  { name: "About", href: "/about" },
+];
+
 export const authOptions: AuthOptions = {
   providers: [
     DiscordProvider({

@@ -1,7 +1,7 @@
 "use client";
 
 import { Flex, Heading } from "@chakra-ui/react";
-import { KeyCapListingTable } from "../src/components/KeycapListingTable";
+import { KeyCapListingTable } from "../src/components/KeycapListingTable/KeycapListingTable";
 import type { KeycapListing } from "../src/types";
 import { LoadingError } from "../src/components/LoadingError";
 import useSWR from "swr";

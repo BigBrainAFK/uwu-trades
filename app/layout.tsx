@@ -1,9 +1,10 @@
-import { Flex, ChakraProvider } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import AuthProvider from "../src/context/AuthProvider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../src/const";
-import Navbar from "../src/components/Navbar";
+import Navbar from "../src/components/Navbar/Navbar";
 import { Metadata } from "next";
+import { StyleProviders } from "./styleProviders";
 
 export const metadata: Metadata = {
   title: "UwU Keycap Trades",
@@ -21,7 +22,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider session={session}>
-          <ChakraProvider>
+          <StyleProviders>
             <Flex direction="column" height="100vh">
               <Navbar />
               <Flex
@@ -33,7 +34,7 @@ export default async function RootLayout({
                 {children}
               </Flex>
             </Flex>
-          </ChakraProvider>
+          </StyleProviders>
         </AuthProvider>
       </body>
     </html>
