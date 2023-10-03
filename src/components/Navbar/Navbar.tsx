@@ -19,7 +19,7 @@ export default function Navbar() {
 
   return (
     <>
-      <Box bg={useColorModeValue("grey.100", "grey.900")} px="4">
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px="4">
         <Flex h="16" alignItems="center" justifyContent="spacing-between">
           <MobileNavButton isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
           <ColorModeToggle />
