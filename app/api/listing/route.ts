@@ -7,6 +7,7 @@ import {
 } from "../../../src/util";
 import { getServerSession } from "next-auth";
 import countries from "../../../src/countries.json";
+import countryFlags from "../../../src/countryFlags.json";
 
 async function getHandler() {
   const listings = await Database.listing
@@ -25,7 +26,12 @@ async function getHandler() {
           keycap: listing.keycap,
           type: listing.type,
           exchange: listing.exchange,
-          country: listing.country,
+          country: {
+            name: listing.country,
+            flag:
+              countryFlags.find((entry) => entry.name === listing.country)
+                ?.emoji ?? "",
+          },
           city: listing.nearestCity,
           actions: undefined,
         });

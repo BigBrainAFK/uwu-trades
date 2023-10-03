@@ -1,9 +1,9 @@
 "use client";
 
 import {
+  ColumnDef,
   ColumnFiltersState,
   FilterFn,
-  createColumnHelper,
   getFacetedMinMaxValues,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -38,10 +38,8 @@ import {
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import type { KeycapListing } from "../../types";
-import { ExchangeType } from "@prisma/client";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import { KeycapListingTableFilter } from "./KeycapListingTableFilter";
-import { Keycap } from "../Keycap";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -62,73 +60,12 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-const columnHelper = createColumnHelper<KeycapListing>();
-
-const columns = [
-  columnHelper.accessor((row) => row.user.name, {
-    cell: (data) => data.getValue(),
-    footer: (props) => props.column.id,
-    header: "Discord Username",
-  }),
-  columnHelper.accessor("type", {
-    cell: (data) =>
-      `${data.getValue().charAt(0)}${data.getValue().slice(1).toLowerCase()}`,
-    footer: (props) => props.column.id,
-    header: "Type",
-  }),
-  columnHelper.accessor((row) => row.keycap.name, {
-    cell: (data) => data.getValue(),
-    footer: (props) => props.column.id,
-    id: "keycapName",
-    header: "Keycap Name",
-  }),
-  columnHelper.accessor("keycap", {
-    cell: (data) => {
-      const { name, image } = data.getValue();
-      return <Keycap name={name} image={image} />;
-    },
-    footer: (props) => props.column.id,
-    id: "keycapImage",
-    header: "Image",
-    enableColumnFilter: false,
-    enableGlobalFilter: false,
-    enableSorting: false,
-  }),
-  columnHelper.accessor("exchange", {
-    cell: (data) => {
-      const value = data.getValue();
-      return value == ExchangeType.IRL
-        ? value
-        : `${value.charAt(0)}${value.slice(1).toLowerCase()}`;
-    },
-    footer: (props) => props.column.id,
-    header: "Exchange",
-  }),
-  columnHelper.accessor("country", {
-    cell: (data) => data.getValue(),
-    footer: (props) => props.column.id,
-    header: "Country",
-  }),
-  columnHelper.accessor("city", {
-    cell: (data) => data.getValue(),
-    footer: (props) => props.column.id,
-    header: "Nearest city",
-  }),
-  columnHelper.accessor("actions", {
-    cell: (data) => data.getValue(),
-    footer: (props) => props.column.id,
-    header: "Actions",
-    enableHiding: true,
-    enableColumnFilter: false,
-    enableGlobalFilter: false,
-  }),
-];
-
-export type DataTableProps = {
+type DataTableProps = {
   data: KeycapListing[];
+  columns: ColumnDef<KeycapListing, any>[];
 };
 
-export function KeyCapListingTable({ data }: DataTableProps) {
+export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({

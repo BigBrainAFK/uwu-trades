@@ -16,7 +16,6 @@ export const NavEntries = [
   { name: "Keycap Overview", href: "/overview" },
   { name: "About", href: "/about" },
 ];
-
 export const authOptions: AuthOptions = {
   providers: [
     DiscordProvider({

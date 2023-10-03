@@ -19,6 +19,7 @@ export function MobileNavButton(props: Props) {
       aria-label="Open Menu"
       display={{ md: "none" }}
       onClick={isOpen ? onClose : onOpen}
+      marginRight="4"
     />
   );
 }

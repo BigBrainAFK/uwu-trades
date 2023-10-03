@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import AuthProvider from "../src/context/AuthProvider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../src/const";
-import Navbar from "../src/components/Navbar/Navbar";
+import Navbar from "../src/components/Navbar";
 import { Metadata } from "next";
 import { StyleProviders } from "./styleProviders";
 
