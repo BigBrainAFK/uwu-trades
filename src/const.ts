@@ -13,7 +13,6 @@ export const API_BASE = __dev__
 export const NavEntries = [
   { name: "Home", href: "/" },
   { name: "Add listing", href: "/listing/create" },
-  { name: "Keycap Overview", href: "/overview" },
   { name: "About", href: "/about" },
 ];
 export const authOptions: AuthOptions = {

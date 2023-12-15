@@ -100,7 +100,7 @@ export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
   }
 
   return (
-    <>
+    <VStack>
       <Table>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -221,13 +221,13 @@ export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
             table.setPageSize(Number(e.target.value));
           }}
         >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
+          {[5, 10, 15, 20].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
           ))}
         </Select>
       </Flex>
-    </>
+    </VStack>
   );
 }

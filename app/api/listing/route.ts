@@ -1,47 +1,7 @@
 import { Database, authOptions } from "../../../src/const";
-import type { KeycapListing } from "../../../src/types";
-import {
-  getDiscordUser,
-  stringToExchangeType,
-  stringToListingType,
-} from "../../../src/util";
+import { stringToExchangeType, stringToListingType } from "../../../src/util";
 import { getServerSession } from "next-auth";
 import countries from "../../../src/countries.json";
-import countryFlags from "../../../src/countryFlags.json";
-
-async function getHandler() {
-  const listings = await Database.listing
-    .findMany({
-      include: { keycap: true },
-    })
-    .then(async (listings) => {
-      const formattedListings: KeycapListing[] = [];
-
-      for (const listing of listings) {
-        const user = await getDiscordUser(listing.userId);
-
-        formattedListings.push({
-          id: listing.id,
-          user,
-          keycap: listing.keycap,
-          type: listing.type,
-          exchange: listing.exchange,
-          country: {
-            name: listing.country,
-            flag:
-              countryFlags.find((entry) => entry.name === listing.country)
-                ?.emoji ?? "",
-          },
-          city: listing.nearestCity,
-          actions: undefined,
-        });
-      }
-
-      return formattedListings;
-    });
-
-  return Response.json(listings);
-}
 
 async function postHandler(req: Request) {
   const session = await getServerSession(authOptions);
@@ -140,4 +100,4 @@ async function postHandler(req: Request) {
   return Response.json({ success: true }, { status: 200 });
 }
 
-export { getHandler as GET, postHandler as POST };
+export { postHandler as POST };

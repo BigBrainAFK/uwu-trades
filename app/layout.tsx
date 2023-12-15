@@ -5,6 +5,8 @@ import { authOptions } from "../src/const";
 import Navbar from "../src/components/Navbar";
 import { Metadata } from "next";
 import { StyleProviders } from "./styleProviders";
+import { Suspense } from "react";
+import { Loading } from "../src/components/Loading";
 
 export const metadata: Metadata = {
   title: "UwU Keycap Trades",
@@ -30,8 +32,9 @@ export default async function RootLayout({
                 justifyContent="center"
                 alignItems="center"
                 flexGrow="1"
+                fontSize={{ base: "2xs", "2xl": "md" }}
               >
-                {children}
+                <Suspense fallback={<Loading />}>{children}</Suspense>
               </Flex>
             </Flex>
           </StyleProviders>

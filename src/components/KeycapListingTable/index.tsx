@@ -5,7 +5,6 @@ import { ReactNode } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 import { KeycapListing } from "../../types";
-import { Keycap } from "../Keycap";
 import { KeyCapListingTableBody } from "./KeycapListingTableBody";
 
 const ExchangeIcons: { [x in ExchangeType]: ReactNode } = {
@@ -21,30 +20,6 @@ const columns = [
     footer: (props) => props.column.id,
     header: "Discord Username",
   }),
-  columnHelper.accessor("type", {
-    cell: (data) =>
-      `${data.getValue().charAt(0)}${data.getValue().slice(1).toLowerCase()}`,
-    footer: (props) => props.column.id,
-    header: "Type",
-  }),
-  columnHelper.accessor((row) => row.keycap.name, {
-    cell: (data) => data.getValue(),
-    footer: (props) => props.column.id,
-    id: "keycapName",
-    header: "Keycap Name",
-  }),
-  columnHelper.accessor("keycap", {
-    cell: (data) => {
-      const { name, image } = data.getValue();
-      return <Keycap name={name} image={image} />;
-    },
-    footer: (props) => props.column.id,
-    id: "keycapImage",
-    header: "Image",
-    enableColumnFilter: false,
-    enableGlobalFilter: false,
-    enableSorting: false,
-  }),
   columnHelper.accessor("exchange", {
     cell: (data) => {
       const value = data.getValue();
@@ -55,7 +30,9 @@ const columns = [
               ? value
               : `${value.charAt(0)}${value.slice(1).toLowerCase()}`}
           </Text>
-          <Text fontSize="4xl">{ExchangeIcons[value]}</Text>
+          <Text fontSize={{ base: "lg", "2xl": "4xl" }}>
+            {ExchangeIcons[value]}
+          </Text>
         </HStack>
       );
     },
@@ -69,7 +46,9 @@ const columns = [
       ) : (
         <HStack spacing="4">
           <Text>{data.getValue()}</Text>
-          <Text fontSize="5xl">{data.row.original.country.flag}</Text>
+          <Text fontSize={{ base: "lg", "2xl": "5xl" }}>
+            {data.row.original.country.flag}
+          </Text>
         </HStack>
       ),
     footer: (props) => props.column.id,

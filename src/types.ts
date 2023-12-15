@@ -14,7 +14,6 @@ export interface DiscordInfo {
 export interface KeycapListing {
   id: number;
   user: DiscordInfo;
-  keycap: KeycapData;
   type: ListingType;
   exchange: ExchangeType;
   country: {
