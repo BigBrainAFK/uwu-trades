@@ -66,7 +66,13 @@ export default function Page() {
       </HStack>
       <Wrap spacing="4" justify="center">
         {keycaps.map((keycap) => (
-          <WrapItem key={keycap.id} mb={4} backgroundColor={colorContext.color}>
+          <WrapItem
+            key={keycap.id}
+            mb="4"
+            borderRadius="20px"
+            overflow="hidden"
+            backgroundColor={colorContext.color}
+          >
             <Link href={`/keycap/${keycap.id}`}>
               <VStack>
                 <Text as="h2" fontSize={{ base: "md", "2xl": "xl" }} flex="1">
