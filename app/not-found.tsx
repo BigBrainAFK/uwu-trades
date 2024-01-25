@@ -1,11 +1,14 @@
 "use client";
 
-import { Heading } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function NotFound() {
-  return (
-    <Heading as="h1" size="xl">
-      Requested resource does not exist
-    </Heading>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/");
+  }, []);
+
+  return <></>;
 }

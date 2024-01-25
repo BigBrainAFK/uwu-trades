@@ -18,6 +18,8 @@ import {
 import { ListingActions } from "../../../src/components/ListingActions";
 import { Keycap, ListingType } from "@prisma/client";
 import KeyCapListingTable from "../../../src/components/KeycapListingTable";
+import NotFound from "../../not-found";
+import { isUndefined } from "swr/_internal";
 
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -33,7 +35,8 @@ export default function Page({ params }: { params: { id: string } }) {
   );
 
   if (listingsError || keycapError) return <LoadingError />;
-  if (listings == undefined || keycap == undefined) return <Loading />;
+  if (isUndefined(listings) || isUndefined(keycap)) return <Loading />;
+  if ("error" in listings || "error" in keycap) return <NotFound />;
 
   const formattedListings = listings.map((listing) => ({
     ...listing,

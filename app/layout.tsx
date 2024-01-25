@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { StyleProviders } from "./styleProviders";
 import { Suspense } from "react";
 import { Loading } from "../src/components/Loading";
+import { ColorProvider } from "../src/context/ColorProvider";
 
 export const metadata: Metadata = {
   title: "UwU Keycap Trades",
@@ -23,22 +24,24 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider session={session}>
-          <StyleProviders>
-            <Flex direction="column" height="100vh">
-              <Navbar />
-              <Flex
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                flexGrow="1"
-                fontSize={{ base: "2xs", "2xl": "md" }}
-              >
-                <Suspense fallback={<Loading />}>{children}</Suspense>
+        <StyleProviders>
+          <ColorProvider>
+            <AuthProvider session={session}>
+              <Flex direction="column" height="100vh">
+                <Navbar />
+                <Flex
+                  direction="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  flexGrow="1"
+                  fontSize={{ base: "2xs", "2xl": "md" }}
+                >
+                  <Suspense fallback={<Loading />}>{children}</Suspense>
+                </Flex>
               </Flex>
-            </Flex>
-          </StyleProviders>
-        </AuthProvider>
+            </AuthProvider>
+          </ColorProvider>
+        </StyleProviders>
       </body>
     </html>
   );

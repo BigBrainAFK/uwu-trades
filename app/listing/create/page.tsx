@@ -22,6 +22,8 @@ import useSWR from "swr";
 import { LoadingError } from "../../../src/components/LoadingError";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { isUndefined } from "swr/_internal";
+import NotFound from "../../not-found";
 
 interface FormData {
   keycap: { label: string; value: string; image: string } | undefined;
@@ -55,12 +57,35 @@ export default function Page() {
   );
 
   if (keycapsError || countriesError) return <LoadingError />;
-  if (keycaps == undefined || countries == undefined) return <Loading />;
+  if (isUndefined(keycaps) || isUndefined(countries)) return <Loading />;
+  if (
+    "error" in keycaps ||
+    "error" in countries ||
+    (!isUndefined(cities) && "error" in cities)
+  )
+    return <NotFound />;
 
-  const keycapOptions = keycaps.map((keycap) => ({
-    label: keycap.name,
-    value: keycap.id,
-    image: keycap.image,
+  const keycapOptions = Object.entries(
+    keycaps.reduce<
+      Record<string, { label: string; value: number; image: string }[]>
+    >((prev, curr) => {
+      const keycapGroup = curr.name.split(" ").slice(0, -1).join(" ");
+
+      if (!(keycapGroup in prev)) {
+        prev[keycapGroup] = [];
+      }
+
+      prev[keycapGroup].push({
+        label: curr.name,
+        value: curr.id,
+        image: curr.image,
+      });
+
+      return prev;
+    }, {})
+  ).map(([key, value]) => ({
+    label: key,
+    options: value,
   }));
 
   const countriesOptions = countries.map((country) => ({
@@ -191,8 +216,11 @@ export default function Page() {
                         onChange={(value) =>
                           props.setFieldValue("keycap", value)
                         }
-                        defaultValue={keycapOptions.find(
-                          (keycap) => keycap.value == selectedKeycap?.id
+                        defaultValue={Object.values(keycapOptions).find(
+                          ({ label: _, options }) =>
+                            options.find(
+                              (keycap) => keycap.value == selectedKeycap?.id
+                            )
                         )}
                         options={keycapOptions}
                         formatOptionLabel={(keycap) => (

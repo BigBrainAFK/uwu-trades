@@ -77,6 +77,10 @@ export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
     state: {
       columnFilters,
       sorting,
+      pagination: {
+        pageIndex: 0,
+        pageSize: 5,
+      },
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

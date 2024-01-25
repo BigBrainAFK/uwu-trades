@@ -21,8 +21,10 @@ import {
 } from "react-icons/tb";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useColor } from "../src/context/ColorProvider";
 
 export default function Page() {
+  const colorContext = useColor();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const { data: keycaps, error: keycapsError } = useSWR<Keycap[], Error>(
     "/api/keycap",
@@ -41,6 +43,7 @@ export default function Page() {
 
   if (keycapsError) return <LoadingError />;
   if (keycaps === undefined) return <Loading />;
+  if ("error" in keycaps) throw new Error("No keycaps found");
 
   return (
     <>
@@ -63,7 +66,7 @@ export default function Page() {
       </HStack>
       <Wrap spacing="4" justify="center">
         {keycaps.map((keycap) => (
-          <WrapItem key={keycap.id}>
+          <WrapItem key={keycap.id} mb={4} backgroundColor={colorContext.color}>
             <Link href={`/keycap/${keycap.id}`}>
               <VStack>
                 <Text as="h2" fontSize={{ base: "md", "2xl": "xl" }} flex="1">

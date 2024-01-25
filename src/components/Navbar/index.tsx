@@ -1,25 +1,21 @@
 "use client";
 
-import {
-  Box,
-  Flex,
-  HStack,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, useDisclosure } from "@chakra-ui/react";
 import { ColorModeToggle } from "./ColorModeToggle";
 import { UserActions } from "./UserActions";
 import { NavEntries } from "../../const";
 import { NavLink } from "./NavLink";
 import { MobileNavButton } from "./MobileNavButton";
 import { MobileNavList } from "./MobileNavList";
+import { useColor } from "../../context/ColorProvider";
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const colorContext = useColor();
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px="4">
+      <Box bg={colorContext.color} px="4">
         <Flex h="16" alignItems="center" justifyContent="spacing-between">
           <MobileNavButton isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
           <ColorModeToggle />

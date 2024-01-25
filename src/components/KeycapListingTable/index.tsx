@@ -1,4 +1,4 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { Center, Flex, HStack, Heading, Text } from "@chakra-ui/react";
 import { ExchangeType } from "@prisma/client";
 import { createColumnHelper } from "@tanstack/react-table";
 import { ReactNode } from "react";
@@ -74,5 +74,18 @@ interface Props {
 }
 
 export default function KeycapListingTable(props: Props) {
+  if (props.data.length === 0)
+    return (
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        flexGrow="1"
+        mb="4"
+      >
+        <Heading size="sm">No listings</Heading>
+      </Flex>
+    );
+
   return <KeyCapListingTableBody {...props} columns={columns} />;
 }
