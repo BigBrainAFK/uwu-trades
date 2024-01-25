@@ -9,6 +9,7 @@ import {
   IconButton,
   HStack,
   Heading,
+  Box,
 } from "@chakra-ui/react";
 import { swrFetcher } from "../src/util";
 import useSWR from "swr";
@@ -69,7 +70,7 @@ export default function Page() {
           <WrapItem
             key={keycap.id}
             mb="4"
-            borderRadius="20px"
+            borderRadius="15px"
             overflow="hidden"
             backgroundColor={colorContext.color}
           >
@@ -78,12 +79,14 @@ export default function Page() {
                 <Text as="h2" fontSize={{ base: "md", "2xl": "xl" }} flex="1">
                   {keycap.name}
                 </Text>
-                <Image
-                  src={keycap.image}
-                  alt={keycap.name}
-                  boxSize={{ base: "120px", "2xl": "200px" }}
-                  objectFit="cover"
-                />
+                <Box borderRadius="15px" overflow="hidden">
+                  <Image
+                    src={keycap.image}
+                    alt={keycap.name}
+                    boxSize={{ base: "120px", "2xl": "200px" }}
+                    objectFit="cover"
+                  />
+                </Box>
               </VStack>
             </Link>
           </WrapItem>

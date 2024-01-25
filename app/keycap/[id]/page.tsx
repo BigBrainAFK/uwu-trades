@@ -62,12 +62,14 @@ export default function Page({ params }: { params: { id: string } }) {
           <Heading size="md">{keycap.name}</Heading>
         </CardHeader>
         <CardBody>
-          <Image
-            objectFit="cover"
-            maxW={{ base: "100%", sm: "200px" }}
-            src={keycap.image}
-            alt={keycap.name}
-          />
+          <Box borderRadius="15px" overflow="hidden">
+            <Image
+              objectFit="cover"
+              maxW={{ base: "100%", sm: "200px" }}
+              src={keycap.image}
+              alt={keycap.name}
+            />
+          </Box>
         </CardBody>
       </Card>
       <Card>
