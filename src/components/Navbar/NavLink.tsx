@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, useColorModeValue } from "@chakra-ui/react";
+import Link from "next/link";
 
 interface Props {
   children: React.ReactNode;
@@ -20,9 +21,10 @@ export function NavLink(props: Props) {
         textDecoration: "none",
         bg: useColorModeValue("gray.200", "gray.700"),
       }}
-      href={href}
     >
-      {children}
+      <Link href={href} passHref>
+        {children}
+      </Link>
     </Box>
   );
 }
