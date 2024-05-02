@@ -65,7 +65,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <Box borderRadius="15px" overflow="hidden">
             <Image
               objectFit="cover"
-              maxW={{ base: "100%", sm: "200px" }}
+              maxW="100%"
               src={keycap.image}
               alt={keycap.name}
             />
