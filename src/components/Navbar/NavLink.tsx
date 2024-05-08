@@ -13,7 +13,6 @@ export function NavLink(props: Props) {
 
   return (
     <Box
-      as="a"
       px={2}
       py={1}
       rounded={"md"}
