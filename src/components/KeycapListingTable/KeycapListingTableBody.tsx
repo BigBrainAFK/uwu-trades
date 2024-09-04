@@ -68,7 +68,11 @@ type DataTableProps = {
 export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const table = useReactTable({
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+  const table = useReactTable<KeycapListing>({
     data,
     columns,
     filterFns: {
@@ -77,10 +81,7 @@ export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
     state: {
       columnFilters,
       sorting,
-      pagination: {
-        pageIndex: 0,
-        pageSize: 5,
-      },
+      pagination,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -91,6 +92,7 @@ export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    onPaginationChange: setPagination,
   });
   const { status } = useSession();
 
