@@ -1,4 +1,4 @@
-import { Database } from "../../../src/const";
+import { Database } from "../../../src/db";
 
 async function getHandler() {
   const keycaps = await Database.keycap.findMany({ orderBy: { name: "asc" } });

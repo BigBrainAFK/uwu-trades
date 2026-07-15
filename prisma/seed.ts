@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Database as prisma } from "../src/db";
 import { readdirSync } from "fs";
 import path from "path";
 
@@ -14,7 +14,6 @@ export function* readAllFiles(dir: string): Generator<string> {
   }
 }
 
-const prisma = new PrismaClient();
 async function main() {
   const inserts: { name: string; image: string }[] = [];
 

@@ -1,18 +1,6 @@
 "use client";
 
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Button,
-  Image,
-  VStack,
-  Heading,
-  Flex,
-  Radio,
-  Text,
-} from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
+import { Select } from "../../../src/components/Select";
 import { ExchangeType, Keycap, ListingType } from "@prisma/client";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import { Loading } from "../../../src/components/Loading";
@@ -24,6 +12,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { isUndefined } from "swr/_internal";
 import NotFound from "../../not-found";
+import { Button } from "../../../src/components/ui";
 
 interface FormData {
   keycap: { label: string; value: string; image: string } | undefined;
@@ -182,12 +171,10 @@ export default function Page() {
   }
 
   return (
-    <Flex flexDirection="column">
-      <VStack spacing="2rem">
-        <Heading as="h1" size="xl">
-          Create keycap listing
-        </Heading>
-        <Formik
+    <div className="flex flex-col">
+      <div className="flex flex-col items-center gap-8">
+        <h1 className="text-3xl font-bold">Create keycap listing</h1>
+        <Formik<FormData>
           initialValues={{
             keycap: undefined,
             type: undefined,
@@ -197,19 +184,11 @@ export default function Page() {
         >
           {(props) => (
             <Form>
-              <VStack spacing="4rem">
+              <div className="flex flex-col items-center gap-16">
                 <Field name="keycap" validate={validateKeycap}>
                   {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={
-                        form.errors.keycap != undefined &&
-                        form.touched.keycap != undefined
-                      }
-                      alignItems="center"
-                      display="flex"
-                      flexDirection="column"
-                    >
-                      <FormLabel fontSize="2xl">Keycap</FormLabel>
+                    <div className="flex flex-col items-center">
+                      <label className="text-2xl">Keycap</label>
                       <Select
                         {...field}
                         placeholder="Select keycap"
@@ -223,88 +202,85 @@ export default function Page() {
                             )
                         )}
                         options={keycapOptions}
-                        formatOptionLabel={(keycap) => (
-                          <VStack spacing="4">
-                            <Text>{keycap.label}</Text>
-                            <Image src={keycap.image} alt={keycap.label} />
-                          </VStack>
+                        formatOptionLabel={(keycap: any) => (
+                          <div className="flex flex-col items-center gap-4">
+                            <span>{keycap.label}</span>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={keycap.image} alt={keycap.label} />
+                          </div>
                         )}
                       />
-                      <FormErrorMessage>
-                        {form.errors.keycap?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
+                      {form.errors.keycap != undefined &&
+                        form.touched.keycap != undefined && (
+                          <p className="mt-1 text-red-500">
+                            {form.errors.keycap?.toString()}
+                          </p>
+                        )}
+                    </div>
                   )}
                 </Field>
                 <Field name="type" validate={validateType}>
                   {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={
-                        form.errors.type != undefined &&
-                        form.touched.type != undefined
-                      }
-                      alignItems="center"
-                      display="flex"
-                      flexDirection="column"
-                    >
-                      <FormLabel fontSize="2xl">Want/Have</FormLabel>
+                    <div className="flex flex-col items-center">
+                      <label className="text-2xl">Want/Have</label>
                       {Object.entries(ListingType).map(([key, value]) => (
-                        <Radio
-                          key={key}
-                          {...field}
-                          value={value}
-                          isChecked={field.value === value}
-                        >
-                          {`${value.charAt(0)}${value.slice(1).toLowerCase()}`}
-                        </Radio>
+                        <label key={key} className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name={field.name}
+                            value={value}
+                            checked={field.value === value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                          />
+                          {`${value.charAt(0).toUpperCase()}${value
+                            .slice(1)
+                            .toLowerCase()}`}
+                        </label>
                       ))}
-                      <FormErrorMessage>
-                        {form.errors.type?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
+                      {form.errors.type != undefined &&
+                        form.touched.type != undefined && (
+                          <p className="mt-1 text-red-500">
+                            {form.errors.type?.toString()}
+                          </p>
+                        )}
+                    </div>
                   )}
                 </Field>
                 <Field name="exchange" validate={validateExchange}>
                   {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={
-                        form.errors.exchange != undefined &&
-                        form.touched.exchange != undefined
-                      }
-                      alignItems="center"
-                      display="flex"
-                      flexDirection="column"
-                    >
-                      <FormLabel fontSize="2xl">Exchange type</FormLabel>
+                    <div className="flex flex-col items-center">
+                      <label className="text-2xl">Exchange type</label>
                       {Object.entries(ExchangeType).map(([key, value]) => (
-                        <Radio
-                          key={key}
-                          {...field}
-                          value={value}
-                          isChecked={field.value === value}
-                        >
-                          {value != "IRL"
-                            ? `${value.charAt(0)}${value
+                        <label key={key} className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name={field.name}
+                            value={value}
+                            checked={field.value === value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                          />
+                          {value === ExchangeType.IRL
+                            ? "IRL"
+                            : `${value.charAt(0).toUpperCase()}${value
                                 .slice(1)
-                                .toLowerCase()}`
-                            : value}
-                        </Radio>
+                                .toLowerCase()}`}
+                        </label>
                       ))}
-                      <FormErrorMessage>
-                        {form.errors.exchange?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
+                      {form.errors.exchange != undefined &&
+                        form.touched.exchange != undefined && (
+                          <p className="mt-1 text-red-500">
+                            {form.errors.exchange?.toString()}
+                          </p>
+                        )}
+                    </div>
                   )}
                 </Field>
                 <Field name="country" validate={validateCountry}>
                   {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={form.errors.country != undefined}
-                      alignItems="center"
-                      display="flex"
-                      flexDirection="column"
-                    >
-                      <FormLabel fontSize="2xl">Country</FormLabel>
+                    <div className="flex flex-col items-center">
+                      <label className="text-2xl">Country</label>
                       <Select
                         {...field}
                         placeholder="Select country"
@@ -314,22 +290,19 @@ export default function Page() {
                         }
                         options={countriesOptions}
                       />
-                      <FormErrorMessage>
-                        {form.errors.country?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
+                      {form.errors.country != undefined && (
+                        <p className="mt-1 text-red-500">
+                          {form.errors.country?.toString()}
+                        </p>
+                      )}
+                    </div>
                   )}
                 </Field>
                 {cities && citiesOptions && (
                   <Field name="city" validate={validateCity}>
                     {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={form.errors.city != undefined}
-                        alignItems="center"
-                        display="flex"
-                        flexDirection="column"
-                      >
-                        <FormLabel fontSize="2xl">Nearest city</FormLabel>
+                      <div className="flex flex-col items-center">
+                        <label className="text-2xl">Nearest city</label>
                         <Select
                           {...field}
                           placeholder="Select nearest city"
@@ -339,26 +312,28 @@ export default function Page() {
                           }
                           options={citiesOptions}
                         />
-                        <FormErrorMessage>
-                          {form.errors.city?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
+                        {form.errors.city != undefined && (
+                          <p className="mt-1 text-red-500">
+                            {form.errors.city?.toString()}
+                          </p>
+                        )}
+                      </div>
                     )}
                   </Field>
                 )}
                 <Button
-                  mt={4}
+                  className="mt-4"
                   colorScheme="teal"
                   isLoading={props.isSubmitting}
                   type="submit"
                 >
                   Submit
                 </Button>
-              </VStack>
+              </div>
             </Form>
           )}
         </Formik>
-      </VStack>
-    </Flex>
+      </div>
+    </div>
   );
 }

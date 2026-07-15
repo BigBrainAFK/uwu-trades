@@ -1,4 +1,23 @@
+# dependencies
 node_modules/
+
+# yarn (node-modules linker) — ignore cache/state, keep committable dirs
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# next.js
 .next/
+
+# typescript
+*.tsbuildinfo
+
+# env
 .env
+
+# misc
 .DS_STORE

@@ -1,13 +1,13 @@
 "use client";
 
-import { HStack, Image } from "@chakra-ui/react";
 import type { KeycapData } from "../types";
 
 export function Keycap(props: KeycapData) {
   return (
-    <HStack>
+    <div className="flex items-center gap-2">
       {props.name}
-      <Image src={props.image} alt={props.name} />
-    </HStack>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={props.image} alt={props.name} />
+    </div>
   );
 }

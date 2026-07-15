@@ -1,36 +1,29 @@
 "use client";
 
+import { use } from "react";
 import { useRouter } from "next/navigation";
 import { swrFetcher } from "../../../src/util";
-import useSWR from "swr";
 import { KeycapListing } from "../../../src/types";
 import { LoadingError } from "../../../src/components/LoadingError";
 import Loading from "../../loading";
-import {
-  Box,
-  VStack,
-  Image,
-  Heading,
-  Card,
-  CardHeader,
-  CardBody,
-} from "@chakra-ui/react";
 import { ListingActions } from "../../../src/components/ListingActions";
 import { Keycap, ListingType } from "@prisma/client";
 import KeyCapListingTable from "../../../src/components/KeycapListingTable";
 import NotFound from "../../not-found";
 import { isUndefined } from "swr/_internal";
+import useSWR from "swr";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const router = useRouter();
-  if (isNaN(parseInt(params.id))) return router.replace("/");
+  if (isNaN(parseInt(id))) return router.replace("/");
 
   const { data: listings, error: listingsError } = useSWR<
     KeycapListing[],
     Error
-  >(`/api/listing/${params.id}`, swrFetcher);
+  >(`/api/listing/${id}`, swrFetcher);
   const { data: keycap, error: keycapError } = useSWR<Keycap, Error>(
-    `/api/keycap/${params.id}`,
+    `/api/keycap/${id}`,
     swrFetcher
   );
 
@@ -56,39 +49,35 @@ export default function Page({ params }: { params: { id: string } }) {
   );
 
   return (
-    <VStack spacing={4}>
-      <Card>
-        <CardHeader>
-          <Heading size="md">{keycap.name}</Heading>
-        </CardHeader>
-        <CardBody>
-          <Box borderRadius="15px" overflow="hidden">
-            <Image
-              objectFit="cover"
-              maxW="100%"
+    <div className="flex flex-col items-center gap-4">
+      <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div className="px-6 pt-4">
+          <h2 className="text-lg font-bold">{keycap.name}</h2>
+        </div>
+        <div className="p-6">
+          <div className="overflow-hidden rounded-[15px]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="max-w-full object-cover"
               src={keycap.image}
               alt={keycap.name}
             />
-          </Box>
-        </CardBody>
-      </Card>
-      <Card>
-        <CardBody>
-          <Box>
-            <Heading as="h2" size="lg">
-              Has
-            </Heading>
+          </div>
+        </div>
+      </div>
+      <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div className="p-6">
+          <div>
+            <h2 className="text-2xl font-bold">Has</h2>
             <KeyCapListingTable data={hasListings} />
-          </Box>
-          <hr />
-          <Box>
-            <Heading as="h2" size="lg">
-              Wants
-            </Heading>
+          </div>
+          <hr className="my-4 border-gray-200 dark:border-gray-700" />
+          <div>
+            <h2 className="text-2xl font-bold">Wants</h2>
             <KeyCapListingTable data={wantListings} />
-          </Box>
-        </CardBody>
-      </Card>
-    </VStack>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,11 +1,11 @@
-import { getEffectiveTypeParameterDeclarations } from "typescript";
 import * as countries from "../../../../src/countries.json";
 
 async function getHandler(
   _: Request,
-  { params }: { params: { country: string } }
+  { params }: { params: Promise<{ country: string }> }
 ) {
-  return Response.json(countries[params.country as keyof typeof countries]);
+  const { country } = await params;
+  return Response.json(countries[country as keyof typeof countries]);
 }
 
 export { getHandler as GET };

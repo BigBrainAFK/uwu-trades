@@ -1,6 +1,5 @@
 "use client";
 
-import { HStack } from "@chakra-ui/react";
 import { RemoveButton } from "./RemoveButton";
 import { useSession } from "next-auth/react";
 import { isSessionValid } from "../util";
@@ -18,8 +17,8 @@ export function ListingActions(props: Props) {
   }
 
   return (
-    <HStack>
+    <div className="flex items-center gap-2">
       <RemoveButton id={props.id} />
-    </HStack>
+    </div>
   );
 }

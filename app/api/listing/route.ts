@@ -1,4 +1,5 @@
-import { Database, authOptions } from "../../../src/const";
+import { authOptions } from "../../../src/const";
+import { Database } from "../../../src/db";
 import { stringToExchangeType, stringToListingType } from "../../../src/util";
 import { getServerSession } from "next-auth";
 import countries from "../../../src/countries.json";

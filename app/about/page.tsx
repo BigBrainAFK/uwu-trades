@@ -1,23 +1,26 @@
 "use client";
 
-import { VStack, Text, Link } from "@chakra-ui/react";
-
 export default function Page() {
   return (
-    <VStack fontSize="xl" fontWeight="bold" spacing="2rem">
-      <Text>
+    <div className="flex flex-col items-center gap-8 text-xl font-bold">
+      <p>
         All trades or arrangements made between individuals are the sole
         responsibility of the parties involved.
-      </Text>
-      <Text>
+      </p>
+      <p>
         I (Discord: @bigbrainafk) do NOT guarantee or enforce any trade
         behavior, nor provide any escrow services.
-      </Text>
-      <Text>All trading is done at the individual's own risk: be careful!</Text>
-      <Text>
+      </p>
+      <p>All trading is done at the individual&apos;s own risk: be careful!</p>
+      <p>
         The Website is provided as is and all source code can be found at{" "}
-        <Link href="https://github.com/BigBrainAFK/uwu-trades">GitHub</Link>
-      </Text>
-    </VStack>
+        <a
+          className="text-teal-500 underline hover:text-teal-600"
+          href="https://github.com/BigBrainAFK/uwu-trades"
+        >
+          GitHub
+        </a>
+      </p>
+    </div>
   );
 }

@@ -1,17 +1,22 @@
-import { Database, authOptions } from "../../../../src/const";
+import { authOptions } from "../../../../src/const";
+import { Database } from "../../../../src/db";
 import { getServerSession } from "next-auth";
 import { KeycapListing } from "../../../../src/types";
 import { getDiscordUser } from "../../../../src/util";
 import countryFlags from "../../../../src/countryFlags.json";
 
-async function getHandler(_: Request, { params }: { params: { id: string } }) {
-  if (isNaN(parseInt(params.id))) {
+async function getHandler(
+  _: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  if (isNaN(parseInt(id))) {
     return Response.json({ error: "ID must be an integer" }, { status: 400 });
   }
 
   const listings = await Database.listing
     .findMany({
-      where: { keycapId: parseInt(params.id) },
+      where: { keycapId: parseInt(id) },
     })
     .then(async (listings) => {
       const formattedListings: KeycapListing[] = [];
@@ -43,7 +48,7 @@ async function getHandler(_: Request, { params }: { params: { id: string } }) {
 
 async function deleteHandler(
   _: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -55,12 +60,13 @@ async function deleteHandler(
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (isNaN(parseInt(params.id))) {
+  const { id } = await params;
+  if (isNaN(parseInt(id))) {
     return Response.json({ error: "ID must be an integer" }, { status: 400 });
   }
 
   const listing = await Database.listing.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(id) },
   });
 
   if (listing == null) {
@@ -68,7 +74,7 @@ async function deleteHandler(
   }
 
   const response = await Database.listing
-    .delete({ where: { id: parseInt(params.id) } })
+    .delete({ where: { id: parseInt(id) } })
     .then(() => Response.json({ success: true }, { status: 200 }))
     .catch((err) => Response.json({ error: err }, { status: 500 }));
 

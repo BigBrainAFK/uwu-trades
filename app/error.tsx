@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { Button } from "../src/components/ui";
 
 export default function Error({
   error,
@@ -15,11 +15,9 @@ export default function Error({
   }, [error]);
 
   return (
-    <>
-      <Heading as="h1" size="xl">
-        Something went wrong!
-      </Heading>
+    <div className="flex flex-col items-center gap-4">
+      <h1 className="text-3xl font-bold">Something went wrong!</h1>
       <Button onClick={() => reset()}>Try again</Button>
-    </>
+    </div>
   );
 }

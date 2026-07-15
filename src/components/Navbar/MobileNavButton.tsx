@@ -1,7 +1,7 @@
 "use client";
 
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { IconButton } from "@chakra-ui/react";
+import { IoClose, IoMenu } from "react-icons/io5";
+import { IconButton } from "../ui";
 
 interface Props {
   isOpen: boolean;
@@ -14,12 +14,11 @@ export function MobileNavButton(props: Props) {
 
   return (
     <IconButton
-      size="md"
-      icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
       aria-label="Open Menu"
-      display={{ md: "none" }}
+      className="mr-4 md:hidden"
       onClick={isOpen ? onClose : onOpen}
-      marginRight="4"
-    />
+    >
+      {isOpen ? <IoClose /> : <IoMenu />}
+    </IconButton>
   );
 }

@@ -1,16 +1,5 @@
 "use client";
 
-import {
-  Image,
-  Wrap,
-  WrapItem,
-  Text,
-  VStack,
-  IconButton,
-  HStack,
-  Heading,
-  Box,
-} from "@chakra-ui/react";
 import { swrFetcher } from "../src/util";
 import useSWR from "swr";
 import { Keycap } from "@prisma/client";
@@ -22,10 +11,9 @@ import {
 } from "react-icons/tb";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useColor } from "../src/context/ColorProvider";
+import { IconButton } from "../src/components/ui";
 
 export default function Page() {
-  const colorContext = useColor();
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const { data: keycaps, error: keycapsError } = useSWR<Keycap[], Error>(
     "/api/keycap",
@@ -48,50 +36,45 @@ export default function Page() {
 
   return (
     <>
-      <Heading fontSize={{ base: "xl", "2xl": "4xl" }}>Select Keycap</Heading>
-      <HStack spacing="4" marginTop="4" marginBottom="4">
+      <h1 className="text-xl font-bold 2xl:text-4xl">Select Keycap</h1>
+      <div className="my-4 flex items-center gap-4">
         <IconButton
           aria-label="Sort ascending"
+          size="lg"
           onClick={() => setSortOrder("asc")}
-          icon={<TbSortAscendingLetters />}
-          size={{ base: "md", "2xl": "lg" }}
-          fontSize={{ base: "md", "2xl": "3xl" }}
-        />
+        >
+          <TbSortAscendingLetters />
+        </IconButton>
         <IconButton
           aria-label="Sort descending"
+          size="lg"
           onClick={() => setSortOrder("desc")}
-          icon={<TbSortDescendingLetters />}
-          size={{ base: "md", "2xl": "lg" }}
-          fontSize={{ base: "md", "2xl": "3xl" }}
-        />
-      </HStack>
-      <Wrap spacing="4" justify="center">
+        >
+          <TbSortDescendingLetters />
+        </IconButton>
+      </div>
+      <div className="flex flex-wrap justify-center gap-4">
         {keycaps.map((keycap) => (
-          <WrapItem
+          <div
             key={keycap.id}
-            mb="4"
-            borderRadius="15px"
-            overflow="hidden"
-            backgroundColor={colorContext.color}
+            className="mb-4 overflow-hidden rounded-[15px] bg-gray-50 dark:bg-gray-900"
           >
             <Link href={`/keycap/${keycap.id}`}>
-              <VStack>
-                <Text as="h2" fontSize={{ base: "md", "2xl": "xl" }} flex="1">
-                  {keycap.name}
-                </Text>
-                <Box borderRadius="15px" overflow="hidden">
-                  <Image
+              <div className="flex flex-col items-center gap-2">
+                <h2 className="text-base 2xl:text-xl">{keycap.name}</h2>
+                <div className="overflow-hidden rounded-[15px]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={keycap.image}
                     alt={keycap.name}
-                    boxSize={{ base: "120px", "2xl": "200px" }}
-                    objectFit="cover"
+                    className="h-[120px] w-[120px] object-cover 2xl:h-[200px] 2xl:w-[200px]"
                   />
-                </Box>
-              </VStack>
+                </div>
+              </div>
             </Link>
-          </WrapItem>
+          </div>
         ))}
-      </Wrap>
+      </div>
     </>
   );
 }

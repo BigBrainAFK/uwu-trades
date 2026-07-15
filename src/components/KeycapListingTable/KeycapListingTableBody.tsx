@@ -10,24 +10,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  chakra,
-  Flex,
-  Select,
-  Input,
-  Text,
-  Button,
-  Container,
-  VStack,
-  HStack,
-} from "@chakra-ui/react";
-import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import {
   useReactTable,
   flexRender,
@@ -40,6 +23,7 @@ import { useSession } from "next-auth/react";
 import type { KeycapListing } from "../../types";
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import { KeycapListingTableFilter } from "./KeycapListingTableFilter";
+import { Button, inputClass } from "../ui";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -106,122 +90,117 @@ export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
   }
 
   return (
-    <VStack>
-      <Table>
-        <Thead>
+    <div className="flex flex-col items-center gap-4">
+      <table className="border-collapse">
+        <thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <Tr key={headerGroup.id}>
+            <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                if (header.isPlaceholder) return <></>;
+                if (header.isPlaceholder) return <th key={header.id} />;
 
-                const meta: any = header.column.columnDef.meta;
                 return (
-                  <Th key={header.id} isNumeric={meta?.isNumeric}>
-                    <VStack justify="center">
-                      <HStack onClick={header.column.getToggleSortingHandler()}>
-                        <Text>
+                  <th key={header.id} className="px-4 py-2 align-top">
+                    <div className="flex flex-col items-center gap-2">
+                      <div
+                        className="flex cursor-pointer items-center gap-1"
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <span>
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                        </Text>
+                        </span>
 
                         {header.column.getIsSorted() ? (
-                          <chakra.span pl="1">
+                          <span className="pl-1">
                             {header.column.getIsSorted() === "desc" ? (
-                              <TriangleDownIcon aria-label="sorted descending" />
+                              <FaCaretDown aria-label="sorted descending" />
                             ) : (
-                              <TriangleUpIcon aria-label="sorted ascending" />
+                              <FaCaretUp aria-label="sorted ascending" />
                             )}
-                          </chakra.span>
-                        ) : (
-                          <></>
-                        )}
-                      </HStack>
+                          </span>
+                        ) : null}
+                      </div>
                       {header.column.getCanFilter() ? (
                         <KeycapListingTableFilter
                           column={header.column}
                           table={table}
                         />
-                      ) : (
-                        <></>
-                      )}
-                    </VStack>
-                  </Th>
+                      ) : null}
+                    </div>
+                  </th>
                 );
               })}
-            </Tr>
+            </tr>
           ))}
-        </Thead>
-        <Tbody>
+        </thead>
+        <tbody>
           {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id}>
-              {row.getVisibleCells().map((cell) => {
-                const meta: any = cell.column.columnDef.meta;
-                return (
-                  <Td key={cell.id} isNumeric={meta?.isNumeric}>
-                    <Flex justify="center">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Flex>
-                  </Td>
-                );
-              })}
-            </Tr>
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} className="px-4 py-2">
+                  <div className="flex justify-center">
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    )}
+                  </div>
+                </td>
+              ))}
+            </tr>
           ))}
-        </Tbody>
-      </Table>
-      <Flex alignSelf="center" justifyItems="center" gap="2rem">
-        <HStack>
+        </tbody>
+      </table>
+      <div className="flex items-center gap-8 self-center">
+        <div className="flex items-center gap-2">
           <Button
             onClick={() => table.setPageIndex(0)}
-            isDisabled={!table.getCanPreviousPage()}
+            disabled={!table.getCanPreviousPage()}
           >
             {"<<"}
           </Button>
           <Button
             onClick={() => table.previousPage()}
-            isDisabled={!table.getCanPreviousPage()}
+            disabled={!table.getCanPreviousPage()}
           >
             {"<"}
           </Button>
           <Button
             onClick={() => table.nextPage()}
-            isDisabled={!table.getCanNextPage()}
+            disabled={!table.getCanNextPage()}
           >
             {">"}
           </Button>
           <Button
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            isDisabled={!table.getCanNextPage()}
+            disabled={!table.getCanNextPage()}
           >
             {">>"}
           </Button>
-        </HStack>
-        <Container>
-          <Text>Page</Text>
-          <Text as="b">
+        </div>
+        <div className="flex flex-col items-center">
+          <span>Page</span>
+          <span className="font-bold">
             {`${
               table.getState().pagination.pageIndex + 1
             } of ${table.getPageCount()}`}
-          </Text>
-        </Container>
-        <Container>
-          <HStack>
-            <Text>Go to page:</Text>
-            <Input
-              type="number"
-              defaultValue={table.getState().pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                table.setPageIndex(page);
-              }}
-            />
-          </HStack>
-        </Container>
-        <Select
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span>Go to page:</span>
+          <input
+            type="number"
+            className={`${inputClass} w-20`}
+            defaultValue={table.getState().pagination.pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              table.setPageIndex(page);
+            }}
+          />
+        </div>
+        <select
+          className={inputClass}
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));
@@ -232,8 +211,8 @@ export function KeyCapListingTableBody({ data, columns }: DataTableProps) {
               Show {pageSize}
             </option>
           ))}
-        </Select>
-      </Flex>
-    </VStack>
+        </select>
+      </div>
+    </div>
   );
 }

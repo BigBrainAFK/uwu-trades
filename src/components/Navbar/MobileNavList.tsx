@@ -1,6 +1,5 @@
 "use client";
 
-import { Stack, Box } from "@chakra-ui/react";
 import { NavLink } from "./NavLink";
 import { NavEntries } from "../../const";
 
@@ -9,17 +8,17 @@ interface Props {
 }
 
 export function MobileNavList(props: Props) {
-  return props.isOpen ? (
-    <Box pb="4" display={{ md: "none" }}>
-      <Stack as="nav" spacing="4">
+  if (!props.isOpen) return <></>;
+
+  return (
+    <div className="pb-4 md:hidden">
+      <nav className="flex flex-col gap-4">
         {NavEntries.map((entry) => (
           <NavLink key={entry.name} href={entry.href}>
             {entry.name}
           </NavLink>
         ))}
-      </Stack>
-    </Box>
-  ) : (
-    <></>
+      </nav>
+    </div>
   );
 }

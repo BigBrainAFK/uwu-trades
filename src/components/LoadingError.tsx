@@ -1,11 +1,5 @@
 "use client";
 
-import { Heading } from "@chakra-ui/react";
-
 export function LoadingError() {
-  return (
-    <Heading as="h1" size="xl">
-      Error loading listings
-    </Heading>
-  );
+  return <h1 className="text-3xl font-bold">Error loading listings</h1>;
 }

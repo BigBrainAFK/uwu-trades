@@ -1,47 +1,56 @@
 "use client";
 
-import {
-  Menu,
-  MenuButton,
-  Button,
-  Flex,
-  Avatar,
-  MenuList,
-  MenuItem,
-} from "@chakra-ui/react";
+import { useState } from "react";
 import { useSession, signOut, signIn } from "next-auth/react";
+import { Button } from "../ui";
 
 export function UserActions() {
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
 
-  return session && session.user ? (
-    <Menu>
-      <MenuButton
-        as={Button}
-        rounded="full"
-        variant="link"
-        cursor="pointer"
-        minWidth="0"
+  if (!session || !session.user) {
+    return (
+      <Button onClick={() => signIn()} className="btn-signin">
+        Sign in
+      </Button>
+    );
+  }
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen((open) => !open)}
+        className="flex min-w-0 cursor-pointer items-center rounded-full"
       >
-        <Flex alignItems="center">
-          {session.user.name}
-          <Avatar
-            size="sm"
-            marginLeft="4"
-            src={
-              session.user.image ??
-              "https://cdn.discordapp.com/embed/avatars/0.png"
-            }
+        {session.user.name}
+        <img
+          alt={session.user.name ?? "User avatar"}
+          className="ml-4 h-8 w-8 rounded-full object-cover"
+          src={
+            session.user.image ??
+            "https://cdn.discordapp.com/embed/avatars/0.png"
+          }
+        />
+      </button>
+      {isOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-10"
+            onClick={() => setIsOpen(false)}
           />
-        </Flex>
-      </MenuButton>
-      <MenuList>
-        <MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
-      </MenuList>
-    </Menu>
-  ) : (
-    <Button onClick={() => signIn()} className="btn-signin">
-      Sign in
-    </Button>
+          <div className="absolute right-0 z-20 mt-2 min-w-[10rem] rounded-md border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                signOut();
+              }}
+              className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              Sign Out
+            </button>
+          </div>
+        </>
+      )}
+    </div>
   );
 }

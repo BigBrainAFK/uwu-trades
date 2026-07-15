@@ -1,4 +1,3 @@
-import { Center, Flex, HStack, Heading, Text } from "@chakra-ui/react";
 import { ExchangeType } from "@prisma/client";
 import { createColumnHelper } from "@tanstack/react-table";
 import { ReactNode } from "react";
@@ -24,16 +23,16 @@ const columns = [
     cell: (data) => {
       const value = data.getValue();
       return (
-        <HStack spacing="4">
-          <Text>
+        <div className="flex items-center gap-4">
+          <span>
             {value == ExchangeType.IRL
-              ? value
-              : `${value.charAt(0)}${value.slice(1).toLowerCase()}`}
-          </Text>
-          <Text fontSize={{ base: "lg", "2xl": "4xl" }}>
-            {ExchangeIcons[value]}
-          </Text>
-        </HStack>
+              ? "IRL"
+              : `${value.charAt(0).toUpperCase()}${value
+                  .slice(1)
+                  .toLowerCase()}`}
+          </span>
+          <span className="text-lg 2xl:text-4xl">{ExchangeIcons[value]}</span>
+        </div>
       );
     },
     footer: (props) => props.column.id,
@@ -44,12 +43,12 @@ const columns = [
       data.getValue() === "Unspecified" ? (
         data.getValue()
       ) : (
-        <HStack spacing="4">
-          <Text>{data.getValue()}</Text>
-          <Text fontSize={{ base: "lg", "2xl": "5xl" }}>
+        <div className="flex items-center gap-4">
+          <span>{data.getValue()}</span>
+          <span className="text-lg 2xl:text-5xl">
             {data.row.original.country.flag}
-          </Text>
-        </HStack>
+          </span>
+        </div>
       ),
     footer: (props) => props.column.id,
     header: "Country",
@@ -76,15 +75,9 @@ interface Props {
 export default function KeycapListingTable(props: Props) {
   if (props.data.length === 0)
     return (
-      <Flex
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        flexGrow="1"
-        mb="4"
-      >
-        <Heading size="sm">No listings</Heading>
-      </Flex>
+      <div className="mb-4 flex flex-grow flex-col items-center justify-center">
+        <h3 className="text-sm font-bold">No listings</h3>
+      </div>
     );
 
   return <KeyCapListingTableBody {...props} columns={columns} />;

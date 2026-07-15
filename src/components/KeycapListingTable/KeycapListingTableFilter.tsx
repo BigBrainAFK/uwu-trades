@@ -3,7 +3,6 @@
 import type { Table, Column } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { KeycapListingTableDebouncedInput } from "./KeycapListingTableDebouncedInput";
-import { Flex } from "@chakra-ui/react";
 
 export function KeycapListingTableFilter({
   column,
@@ -27,7 +26,7 @@ export function KeycapListingTableFilter({
   );
 
   return typeof firstValue === "number" ? (
-    <Flex>
+    <div className="flex gap-2">
       <KeycapListingTableDebouncedInput
         type="number"
         min={Number(column.getFacetedMinMaxValues()?.[0] ?? "")}
@@ -56,7 +55,7 @@ export function KeycapListingTableFilter({
             : ""
         }`}
       />
-    </Flex>
+    </div>
   ) : (
     <>
       <datalist id={column.id + "list"}>

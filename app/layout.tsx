@@ -1,18 +1,29 @@
-import { Flex } from "@chakra-ui/react";
+import "./globals.css";
 import AuthProvider from "../src/context/AuthProvider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../src/const";
 import Navbar from "../src/components/Navbar";
 import { Metadata } from "next";
-import { StyleProviders } from "./styleProviders";
 import { Suspense } from "react";
 import { Loading } from "../src/components/Loading";
-import { ColorProvider } from "../src/context/ColorProvider";
 
 export const metadata: Metadata = {
   title: "UwU Keycap Trades",
   description: "Small website for trading Wooting UwU keycaps",
 };
+
+// Set the theme before first paint to avoid a flash of the wrong color mode.
+// See https://tailwindcss.com/docs/dark-mode#with-system-theme-support
+const themeScript = `
+  try {
+    document.documentElement.classList.toggle(
+      "dark",
+      localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+    );
+  } catch (_) {}
+`;
 
 export default async function RootLayout({
   children,
@@ -23,25 +34,18 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body suppressHydrationWarning={true}>
-        <StyleProviders>
-          <ColorProvider>
-            <AuthProvider session={session}>
-              <Flex direction="column" height="100vh">
-                <Navbar />
-                <Flex
-                  direction="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  flexGrow="1"
-                  fontSize={{ base: "2xs", "2xl": "md" }}
-                >
-                  <Suspense fallback={<Loading />}>{children}</Suspense>
-                </Flex>
-              </Flex>
-            </AuthProvider>
-          </ColorProvider>
-        </StyleProviders>
+        <AuthProvider session={session}>
+          <div className="flex h-screen flex-col">
+            <Navbar />
+            <div className="flex flex-grow flex-col items-center justify-center text-[0.625rem] 2xl:text-base">
+              <Suspense fallback={<Loading />}>{children}</Suspense>
+            </div>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

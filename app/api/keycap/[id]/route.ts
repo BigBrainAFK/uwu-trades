@@ -1,12 +1,16 @@
-import { Database } from "../../../../src/const";
+import { Database } from "../../../../src/db";
 
-async function getHandler(_: Request, { params }: { params: { id: string } }) {
-  if (isNaN(parseInt(params.id))) {
+async function getHandler(
+  _: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  if (isNaN(parseInt(id))) {
     return Response.json({ error: "ID must be an integer" }, { status: 400 });
   }
 
   const keycap = await Database.keycap.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(id) },
   });
 
   if (keycap == null) {
